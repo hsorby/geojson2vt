@@ -77,9 +77,7 @@ def add_feature(tile, feature, tolerance, options):
 def add_line(result, geom, tile, tolerance, is_polygon, is_outer):
     sq_tolerance = tolerance * tolerance
 
-    print('-------')
-    print(geom)
-    if tolerance > 0 and (len(geom) < (sq_tolerance if is_polygon else tolerance)):
+    if tolerance > 0 and (geom.size < (sq_tolerance if is_polygon else tolerance)):
         tile['numPoints'] += len(geom) / 3
         return
 
