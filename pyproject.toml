@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "geojson2vt"
+version = "1.0.1"
+description = "Python package to convert GeoJSON to vector tiles"
+readme = "README.rst"
+authors = [
+    { name = "Samuel Kurath", email = "geometalab@hsr.ch" }
+]
+urls = { Homepage = "https://github.com/geometalab/geojson2vt" }
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "docs"]
