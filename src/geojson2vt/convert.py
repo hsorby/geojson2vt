@@ -23,7 +23,7 @@ def convert_feature(features, geojson, options, index=None):
     if geojson.get('geometry', None) is None:
         return
 
-    coords = geojson.get('geometry').get('coordinates')
+    coordinates = geojson.get('geometry').get('coordinates')
     type_ = geojson.get('geometry').get('type')
     tolerance = math.pow(options.get(
         'tolerance') / ((1 << options.get('maxZoom')) * options.get('extent')), 2)
@@ -35,30 +35,30 @@ def convert_feature(features, geojson, options, index=None):
         id_ = index if index is not None else 0
 
     if type_ == 'Point':
-        convert_point(coords, geometry)
+        convert_point(coordinates, geometry)
     elif type_ == 'MultiPoint':
-        for p in coords:
+        for p in coordinates:
             convert_point(p, geometry)
     elif type_ == 'LineString':
-        convert_line(coords, geometry, tolerance, False)
+        convert_line(coordinates, geometry, tolerance, False)
     elif type_ == 'MultiLineString':
         if options.get('lineMetrics'):
-            # explode into linestrings to be able to track metrics
-            for line in coords:
+            # Explode into line strings to be able to track metrics.
+            for line in coordinates:
                 geometry = Slice([])
                 convert_line(line, geometry, tolerance, False)
                 features.append(create_feature(id_, 'LineString',
                                                geometry, geojson.get('properties')))
             return
         else:
-            convert_lines(coords, geometry, tolerance, False)
+            convert_lines(coordinates, geometry, tolerance, False)
     elif type_ == 'Polygon':
-        convert_lines(coords, geometry, tolerance, True)
+        convert_lines(coordinates, geometry, tolerance, True)
     elif type_ == 'MultiPolygon':
-        for polygon in coords:
-            newPolygon = []
-            convert_lines(polygon, newPolygon, tolerance, True)
-            geometry.append(newPolygon)
+        for polygon in coordinates:
+            new_polygon = []
+            convert_lines(polygon, new_polygon, tolerance, True)
+            geometry.append(new_polygon)
     elif type_ == 'GeometryCollection':
         for singleGeometry in geojson['geometry']['geometries']:
             convert_feature(features, {
@@ -74,13 +74,13 @@ def convert_feature(features, geojson, options, index=None):
         id_, type_, geometry, geojson.get('properties')))
 
 
-def convert_point(coords, out):
-    out.append(project_x(coords[0]))
-    out.append(project_y(coords[1]))
+def convert_point(coordinates, out):
+    out.append(project_x(coordinates[0]))
+    out.append(project_y(coordinates[1]))
     out.append(0)
 
 
-def convert_line(ring, out, tolerance, isPolygon):
+def convert_line(ring, out, tolerance, is_polygon):
     x0, y0 = None, None
     size = 0
 
@@ -93,7 +93,7 @@ def convert_line(ring, out, tolerance, isPolygon):
         out.append(0)
 
         if j > 0:
-            if isPolygon:
+            if is_polygon:
                 size += (x0 * y - x * y0) / 2  # area
             else:
                 size += math.sqrt(math.pow(x - x0, 2) +
@@ -111,10 +111,10 @@ def convert_line(ring, out, tolerance, isPolygon):
     out.end = out.size
 
 
-def convert_lines(rings, out, tolerance, isPolygon):
+def convert_lines(rings, out, tolerance, is_polygon):
     for i in range(len(rings)):
         geom = Slice([])
-        convert_line(rings[i], geom, tolerance, isPolygon)
+        convert_line(rings[i], geom, tolerance, is_polygon)
         out.append(geom)
 
 

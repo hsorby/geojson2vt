@@ -1,20 +1,18 @@
-import math
-
 
 # calculate simplification data using optimized Douglas-Peucker algorithm
-def simplify(coords, first, last=0, sq_tolerance=0.0):
+def simplify(coordinates, first, last=0, sq_tolerance=0.0):
     max_sq_dist = sq_tolerance
     mid = (last - first) >> 1
     min_pos_to_mid = last - first
     index = None
 
-    ax = coords[first]
-    ay = coords[first + 1]
-    bx = coords[last]
-    by = coords[last + 1]
+    ax = coordinates[first]
+    ay = coordinates[first + 1]
+    bx = coordinates[last]
+    by = coordinates[last + 1]
 
     for i in range(first + 3, last, 3):
-        d = get_sq_seg_dist(coords[i], coords[i + 1], ax, ay, bx, by)
+        d = get_sq_seg_dist(coordinates[i], coordinates[i + 1], ax, ay, bx, by)
         if d > max_sq_dist:
             index = i
             max_sq_dist = d
@@ -29,10 +27,10 @@ def simplify(coords, first, last=0, sq_tolerance=0.0):
 
     if max_sq_dist > sq_tolerance:
         if index - first > 3:
-            simplify(coords, first, index, sq_tolerance)
-        coords[index + 2] = max_sq_dist
+            simplify(coordinates, first, index, sq_tolerance)
+        coordinates[index + 2] = max_sq_dist
         if last - index > 3:
-            simplify(coords, index, last, sq_tolerance)
+            simplify(coordinates, index, last, sq_tolerance)
 
 
 # square distance from a point to a segment
@@ -49,7 +47,7 @@ def get_sq_seg_dist(px, py, x, y, bx, by):
             x = bx
             y = by
 
-        elif (t > 0):
+        elif t > 0:
             x += dx * t
             y += dy * t
 

@@ -31,19 +31,19 @@ def vt_feature2geojson_feature(feature, size, x0, y0):
         lat = 360. / math.pi * math.atan(math.exp(y2 * math.pi / 180.)) - 90.
         return [lng, lat]
 
-    def project(coords):
-        if all(isinstance(coord, int) or isinstance(coord, float) for coord in coords):
-            assert len(coords) == 2
-            return project_one(coords[0], coords[1])
-        return [project(cord) for cord in coords]
+    def project(coordinates):
+        if all(isinstance(coord, int) or isinstance(coord, float) for coord in coordinates):
+            assert len(coordinates) == 2
+            return project_one(coordinates[0], coordinates[1])
+        return [project(cord) for cord in coordinates]
 
-    coords = project(feature['geometry'])
+    geometry_coordinates = project(feature['geometry'])
 
     return {
         "type": "Feature",
         "geometry": {
             "type": geometry_types[feature['type']],
-            "coordinates": coords[0] if feature['type'] in range(0,3) and len(coords) else coords
+            "coordinates": geometry_coordinates[0] if feature['type'] in range(0,3) and len(geometry_coordinates) else geometry_coordinates
         },
         "properties": feature.get('tags', {})
     }

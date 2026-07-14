@@ -14,11 +14,11 @@ def get_json(file_path):
     data = None
     with open(file_path) as json_file:
         data = json.load(json_file)
-        _change_int_coords_to_float(data)
+        _change_int_coordinates_to_float(data)
     return data
 
 
-def _change_int_coords_to_float(data):
+def _change_int_coordinates_to_float(data):
     if isinstance(data, dict):
         _walk_dict(data)
     if isinstance(data, list):

@@ -5,6 +5,7 @@ Python port of [JS GeoJSON-VT](https://github.com/mapbox/geojson-vt) to convert 
 Further, it provides the ability to convert the generate vector tiles to separate GeoJSONs (`vt2geojson`).
 ### Usage
 #### geojson2vt
+
 ```python
 # build an initial index of tiles
 tile_index = geojson2vt(geojson, {})
@@ -13,7 +14,7 @@ tile_index = geojson2vt(geojson, {})
 features = tile_index.get_tile(z, x, y).get('features')
 
 # show an array of tile coordinates created so far
-print(tile_index.tile_coords) # [{'z': 0, 'x': 0, 'y': 0}, ...]
+print(tile_index.tile_coordinates)  # [{'z': 0, 'x': 0, 'y': 0}, ...]
 ```
 
 ##### Options

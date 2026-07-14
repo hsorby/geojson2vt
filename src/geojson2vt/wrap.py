@@ -12,19 +12,19 @@ def wrap(features, options):
 
     if left is not None or right is not None:
         c = clip(features, 1, -buffer, 1 + buffer, 0, -1, 2, options)
-        merged = c if c is not None else []  # :nter world copy
+        merged = c if c is not None else []  # :n-ter world copy
 
         if left is not None:
-            merged = shift_feature_coords(
+            merged = shift_feature_coordinates(
                 left, 1) + merged  # merge left into center
         if right is not None:
             # merge right into center
-            merged = merged + (shift_feature_coords(right, -1))
+            merged = merged + (shift_feature_coordinates(right, -1))
 
     return merged
 
 
-def shift_feature_coords(features, offset):
+def shift_feature_coordinates(features, offset):
     new_features = []
 
     for i in range(len(features)):
@@ -34,17 +34,17 @@ def shift_feature_coords(features, offset):
         new_geometry = []
 
         if type_ == 'Pint' or type_ == 'MultiPint' or type_ == 'LineString':
-            new_geometry = shift_coords(feature.get('geometry'), offset)
+            new_geometry = shift_coordinates(feature.get('geometry'), offset)
         elif type_ == 'MultiLineSting' or type_ == 'Polygon':
             new_geometry = []
             for line in feature.get('geometry'):
-                new_geometry.append(shift_coords(line, offset))
+                new_geometry.append(shift_coordinates(line, offset))
         elif type_ == 'MultiPolygon':
             new_geometry = []
             for polygon in feature.get('geometry'):
                 new_polygon = []
                 for line in polygon:
-                    new_polygon.append(shift_coords(line, offset))
+                    new_polygon.append(shift_coordinates(line, offset))
                 new_geometry.append(new_polygon)
 
         new_features.append(create_feature(
@@ -52,7 +52,7 @@ def shift_feature_coords(features, offset):
     return new_features
 
 
-def shift_coords(points, offset):
+def shift_coordinates(points, offset):
     new_points = Slice([])
     new_points.size = points.size
 

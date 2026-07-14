@@ -63,15 +63,15 @@ def add_feature(tile, feature, tolerance, options):
             tags['mapbox_clip_start'] = geom.start / geom.size
             tags['mapbox_clip_end'] = geom.end / geom.size
 
-        tileFeature = {
+        tile_feature = {
             "geometry": simplified,
             "type": 3 if type_ == 'Polygon' or type_ == 'MultiPolygon' else (2 if type_ == 'LineString' or type_ == 'MultiLineString' else 1),
             "tags": tags
         }
         current_id = feature.get('id', None)
         if current_id is not None:
-            tileFeature['id'] = current_id
-        tile['features'].append(tileFeature)
+            tile_feature['id'] = current_id
+        tile['features'].append(tile_feature)
 
 
 def add_line(result, geom, tile, tolerance, is_polygon, is_outer):

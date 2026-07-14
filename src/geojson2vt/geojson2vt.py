@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 from geojson2vt.convert import convert
 from geojson2vt.clip import clip
@@ -40,9 +39,9 @@ class GeoJsonVt:
         # projects and adds simplification info
         features = convert(data, options)
 
-        # tiles and tile_coords are part of the public API
+        # tiles and tile_coordinates are part of the public API
         self.tiles = {}
-        self.tile_coords = []
+        self.tile_coordinates = []
 
         logging.debug(f'preprocess data end')
         logging.debug(
@@ -60,16 +59,15 @@ class GeoJsonVt:
         if len(features) > 0:
             logging.debug(
                 f'features: {self.tiles[0].get("numFeatures")}, points: {self.tiles[0].get("numPoints")}')
-            stop = datetime.now()
         logging.debug(f'generate tiles end')
         logging.debug('tiles generated:', self.total, self.stats)
 
-    # splits features from a parent tile to sub-tiles.
-    # z, x, and y are the coordinates of the parent tile
-    # cz, cx, and cy are the coordinates of the target tile
+    # Splits features from a parent tile to sub-tiles.
+    # z, x, and y are the coordinates of the parent tile.
+    # cz, cx, and cy are the coordinates of the target tile.
     #
     # If no target tile is specified, splitting stops when we reach the maximum
-    # zoom or the number of points is low as specified in the options.
+    # zoom, or the number of points is low as specified in the options.
 
     def split_tile(self, features, z, x, y, cz=None, cx=None, cy=None):
         stack = [features, z, x, y]
@@ -90,7 +88,7 @@ class GeoJsonVt:
 
                 self.tiles[id_] = create_tile(features, z, x, y, options)
                 tile = self.tiles[id_]
-                self.tile_coords.append({'z': z, 'x': x, 'y': y})
+                self.tile_coordinates.append({'z': z, 'x': x, 'y': y})
 
                 logging.debug(
                     f'tile z{z}-{x}-{y} (features: {tile.get("numFeatures")}, points: {tile.get("numPoints")}, simplified: {tile.get("numSimplified")})')
@@ -112,8 +110,8 @@ class GeoJsonVt:
                 continue
             elif cz is not None:
                 # stop tiling if it's not an ancestor of the target tile
-                zoomSteps = cz - z
-                if x != (cx >> zoomSteps) or y != (cy >> zoomSteps):
+                zoom_steps = cz - z
+                if x != (cx >> zoom_steps) or y != (cy >> zoom_steps):
                     continue
 
             # if we slice further down, no need to keep source geometry
@@ -139,21 +137,18 @@ class GeoJsonVt:
                         tile['minX'], tile['maxX'], options)
             right = clip(features, z2, x + k2, x + k4, 0,
                          tile['minX'], tile['maxX'], options)
-            features = None
 
             if left is not None:
                 tl = clip(left, z2, y - k1, y + k3, 1,
                           tile['minY'], tile['maxY'], options)
                 bl = clip(left, z2, y + k2, y + k4, 1,
                           tile['minY'], tile['maxY'], options)
-                left = None
 
             if right is not None:
                 tr = clip(right, z2, y - k1, y + k3, 1,
                           tile['minY'], tile['maxY'], options)
                 br = clip(right, z2, y + k2, y + k4, 1,
                           tile['minY'], tile['maxY'], options)
-                right = None
 
             logging.debug(f'clipping took end')
 
