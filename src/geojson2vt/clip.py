@@ -115,13 +115,13 @@ def clip_line(geom, new_geom, k1, k2, axis, is_polygon, track_metrics):
 
         if a < k1:
             # ---|-->  | (line enters the clip region from the left)
-            if b > k1:
+            if b >= k1:
                 t = intersect(slice_, ax, ay, bx, by, k1)
                 if track_metrics:
                     slice_.start = l + seg_len * t
         elif a > k2:
             # |  <--|--- (line enters the clip region from the right)
-            if b < k2:
+            if b <= k2:
                 t = intersect(slice_, ax, ay, bx, by, k2)
                 if track_metrics:
                     slice_.start = l + seg_len * t
