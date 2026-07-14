@@ -60,7 +60,7 @@ class GeoJsonVt:
             logging.debug(
                 f'features: {self.tiles[0].get("numFeatures")}, points: {self.tiles[0].get("numPoints")}')
         logging.debug(f'generate tiles end')
-        logging.debug('tiles generated:', self.total, self.stats)
+        logging.debug(f'tiles generated: {self.total} {self.stats}')
 
     # Splits features from a parent tile to sub-tiles.
     # z, x, and y are the coordinates of the parent tile.
