@@ -24,6 +24,9 @@ def convert_feature(features, geojson, options, index=None):
         return
 
     coordinates = geojson.get('geometry').get('coordinates')
+    if coordinates is not None and len(coordinates) == 0:
+        return
+
     type_ = geojson.get('geometry').get('type')
     tolerance = math.pow(options.get(
         'tolerance') / ((1 << options.get('maxZoom')) * options.get('extent')), 2)
