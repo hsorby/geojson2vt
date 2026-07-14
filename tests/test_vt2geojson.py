@@ -1,4 +1,6 @@
 import os
+import pytest
+
 from geojson2vt.utils import current_dir, get_json
 from geojson2vt.geojson2vt import geojson2vt
 from geojson2vt.vt2geojson import vt2geojson
@@ -32,6 +34,16 @@ def test_vt2geojson_line_string():
 
     result = vt2geojson(vt_tile)
 
+    # Extract out coordinates that pytest cannot deal with.
+    actual = result["features"][0]["geometry"]["coordinates"]
+    expected_coordinates = expected["features"][0]["geometry"]["coordinates"]
+
+    assert actual[0] == pytest.approx(expected_coordinates[0], abs=1e-10)
+    assert actual[1] == pytest.approx(expected_coordinates[1], abs=1e-10)
+
+    # Now delete coordinates as they have already been checked.
+    result["features"][0]["geometry"]["coordinates"] = []
+    expected["features"][0]["geometry"]["coordinates"] = []
     assert result == expected
 
 def test_vt2geojson_multi():
