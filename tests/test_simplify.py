@@ -41,31 +41,31 @@ simplified = [
 ]
 
 def test_simplifies_points():
-    coords = []
+    coordinates = []
     for i in range(len(points)):        
-        coords.append(points[i][0])
-        coords.append(points[i][1])
-        coords.append(0)
+        coordinates.append(points[i][0])
+        coordinates.append(points[i][1])
+        coordinates.append(0)
 
-    coords[2] = 1    
-    coords[len(coords) - 1] = 1
-    simplify(coords, 0, len(coords) - 3, 0.001 * 0.001)
+    coordinates[2] = 1
+    coordinates[len(coordinates) - 1] = 1
+    simplify(coordinates, 0, len(coordinates) - 3, 0.001 * 0.001)
 
     result = []
     for i in range(0, len(points), 3):  
-        if coords[i + 2] > 0.005 * 0.005:
-            result.append([coords[i], coords[i + 1]])
+        if coordinates[i + 2] > 0.005 * 0.005:
+            result.append([coordinates[i], coordinates[i + 1]])
     # I assume the difference is related to floating point precision
     assert len(result) == 8 # len(simplified)  
     # assert result == simplified
 
 def test_no_call_stack_error():
-    coords = []
+    coordinates = []
     for i in range(1400):
-        coords.append([0.0, 0.0])
-        coords.append([1.0, 0.0])
-        coords.append([1.0, 1.0])
-        coords.append([0.0, 1.0])
+        coordinates.append([0.0, 0.0])
+        coordinates.append([1.0, 0.0])
+        coordinates.append([1.0, 1.0])
+        coordinates.append([0.0, 1.0])
 
-    simplify(coords, 0)
+    simplify(coordinates, 0, 0)
     assert True

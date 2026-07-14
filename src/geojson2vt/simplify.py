@@ -1,8 +1,8 @@
 
 # calculate simplification data using optimized Douglas-Peucker algorithm
-def simplify(coordinates, first, last=0, sq_tolerance=0.0):
+def simplify(coordinates, first, last, sq_tolerance=0.0):
     max_sq_dist = sq_tolerance
-    mid = (last - first) >> 1
+    mid = first + ((last - first) >> 1)
     min_pos_to_mid = last - first
     index = None
 
