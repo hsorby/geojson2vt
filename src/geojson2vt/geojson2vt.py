@@ -82,7 +82,7 @@ class GeoJsonVt:
             features = stack.pop()
 
             z2 = 1 << z
-            id_ = to_Id(z, x, y)
+            id_ = _to_id(z, x, y)
             tile = self.tiles.get(id_, None)
 
             if tile is None:
@@ -195,7 +195,7 @@ class GeoJsonVt:
         z2 = 1 << z
         x = (x + z2) & (z2 - 1)  # wrap tile x coordinate
 
-        id_ = to_Id(z, x, y)
+        id_ = _to_id(z, x, y)
         current_tile = self.tiles.get(id_, None)
         if current_tile is not None:
             return transform_tile(self.tiles[id_], extent)
@@ -211,7 +211,7 @@ class GeoJsonVt:
             z0 -= 1
             x0 = x0 >> 1
             y0 = y0 >> 1
-            parent = self.tiles.get(to_Id(z0, x0, y0), None)
+            parent = self.tiles.get(_to_id(z0, x0, y0), None)
 
         if parent is None or parent.get('source', None) is None:
             return None
@@ -229,7 +229,7 @@ class GeoJsonVt:
         return transformed
 
 
-def to_Id(z, x, y):
+def _to_id(z, x, y):
     id_ = (((1 << z) * y + x) * 32) + z
     return id_
 
