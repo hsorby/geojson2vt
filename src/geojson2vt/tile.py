@@ -32,7 +32,7 @@ def add_feature(tile, feature, tolerance, options):
     tile['maxX'] = max(tile['maxX'], feature['maxX'])
     tile['maxY'] = max(tile['maxY'], feature['maxY'])
 
-    if type_ == 'Point' or type == 'MultiPoint':
+    if type_ == 'Point' or type_ == 'MultiPoint':
         for i in range(0, len(geom), 3):
             simplified.append(geom[i])
             simplified.append(geom[i + 1])
@@ -77,7 +77,9 @@ def add_feature(tile, feature, tolerance, options):
 def add_line(result, geom, tile, tolerance, is_polygon, is_outer):
     sq_tolerance = tolerance * tolerance
 
-    if tolerance > 0 and (geom.size < (sq_tolerance if is_polygon else tolerance)):
+    print('-------')
+    print(geom)
+    if tolerance > 0 and (len(geom) < (sq_tolerance if is_polygon else tolerance)):
         tile['numPoints'] += len(geom) / 3
         return
 
@@ -99,7 +101,7 @@ def rewind(ring, clockwise):
     area = 0
     l = len(ring)
     j = l - 2
-    for i in range(0, l, 2):
+    for i in range(0, l // 2, 2):
         area += (ring[i] - ring[j]) * (ring[i + 1] + ring[j + 1])
         j = i
     if (area > 0) == clockwise:
