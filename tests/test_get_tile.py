@@ -24,9 +24,9 @@ def test_get_tile():
     expected = get_json(expected_path)
     assert features == expected
     assert geojson_vt.get_tile(9, 148, 192).get('features') == square
-    assert geojson_vt.get_tile(11, 800, 400) == None
-    assert geojson_vt.get_tile(-5, 123.25, 400.25) == None
-    assert geojson_vt.get_tile(25, 200, 200) == None
+    assert geojson_vt.get_tile(11, 800, 400) is None
+    assert geojson_vt.get_tile(-5, 123.25, 400.25) is None
+    assert geojson_vt.get_tile(25, 200, 200) is None
     assert geojson_vt.total == 37
 
 
@@ -37,7 +37,7 @@ def test_get_tile_unbuffered():
     }, {
         'buffer': 0
     })
-    assert geojson_vt.get_tile(2, 1, 1) == None
+    assert geojson_vt.get_tile(2, 1, 1) is None
     assert geojson_vt.get_tile(2, 2, 1).get('features') == [
         {'geometry': [[[0., 0.], [0., 4096.]]], 'type': 2, 'tags': None}]
 

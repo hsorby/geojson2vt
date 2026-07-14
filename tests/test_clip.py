@@ -72,7 +72,7 @@ def closed(geometry):
     return geometry
 
 
-def test_clips_poygons():
+def test_clips_polygons():
     clipped = clip([
         {'geometry': closed(geom1), 'type': 'Polygon', 'tags': 1,
          'minX': 0, 'minY': 0, 'maxX': 50, 'maxY': 60},

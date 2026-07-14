@@ -37,7 +37,7 @@ def test_tiles(input_file, expected_file, options):
         assert t == j
 
 
-def test_empty_gejson():
+def test_empty_geojson():
     cur_dir = current_dir(__file__)
     file_path = os.path.join(cur_dir, 'fixtures/empty.json')
     expected = get_json(file_path)
@@ -56,18 +56,18 @@ def test_none_geometry():
 
 def test_invalid_geo_json():
     with pytest.raises(Exception):
-        gen_tiles({'type': 'Pologon'}, {})
+        gen_tiles({'type': 'Polygon'}, {})
 
 
 def gen_tiles(data, options):
-    geoJsonVt = geojson2vt(data, options)
+    geo_json_vt = geojson2vt(data, options)
 
     output = {}
 
-    for id_ in geoJsonVt.tiles:
-        tile = geoJsonVt.tiles[id_]
+    for id_ in geo_json_vt.tiles:
+        tile = geo_json_vt.tiles[id_]
         z = tile.get('z')
-        output[f'z{z}-{tile.get("x")}-{tile.get("y")}'] = geoJsonVt.get_tile(
+        output[f'z{z}-{tile.get("x")}-{tile.get("y")}'] = geo_json_vt.get_tile(
             z, tile.get('x'), tile.get('y')).get('features')
     return output
 
