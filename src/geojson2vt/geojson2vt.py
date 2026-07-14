@@ -22,7 +22,7 @@ def get_default_options():
     }
 
 
-class GeoJsonVt:
+class GeoJson2Vt:
     def __init__(self, data, options, log_level=logging.INFO):
         logging.basicConfig(
             level=log_level, format='%(asctime)s %(levelname)s %(message)s')
@@ -236,4 +236,4 @@ def extend(dest, src):
 
 
 def geojson2vt(data, options, log_level=logging.INFO):
-    return GeoJsonVt(data, options, log_level)
+    return GeoJson2Vt(data, options, log_level)
